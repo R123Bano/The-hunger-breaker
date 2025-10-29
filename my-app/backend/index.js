@@ -3,6 +3,7 @@ const app=express()
 const port=5000
 const mongoDB=require('./db.js');
 const cors = require('cors');
+const path = require("path");
 app.use(cors({
     origin: 'http://localhost:3000',
     methods: ['GET','POST','PUT','DELETE'],
@@ -25,6 +26,15 @@ app.use(express.json());
 app.use('/api',require('./Routes/CreateUser'));
 app.use('/api',require('./Routes/DisplayData'));
 app.use('/api',require('./Routes/OrderData'));
+
+
+
+app.use(express.static(path.join(__dirname, "my-app", "build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "my-app", "build", "index.html"));
+});
+
 app.listen(port,()=>{
     console.log(`Example app listening on port ${port}`)
 });
